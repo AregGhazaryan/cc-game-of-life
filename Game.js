@@ -1,14 +1,27 @@
+/**
+ * @property {Object} element Element on which the game mounts
+ * @property {Array} blocks All cells of the game
+ * @property {Number} width Width of the view
+ * @property {Number} height Height of the view
+ * @property {Function} interval Ongoing simulation interval object
+ */
 class Game {
     constructor() {
         this.element = document.getElementById('#game');
         this.blocks = [];
-        this.generation = 0;
-        
-        const height = (window.innerHeight/12).toFixed() - 10
-        const width = (window.innerWidth/12).toFixed() 
+
+        const height = (window.innerHeight / 12).toFixed() - 10
+        const width = (window.innerWidth / 12).toFixed()
+
         this.createView(width, height)
     }
 
+    /**
+     * @method createView Creates the board/view for the game, takes two arguments width and height
+     * @param {Number} width Width of the view
+     * @param {Number} height Height of the view
+     * @returns {void}
+     */
     createView(width = 100, height = 100) {
         this.width = width;
         this.height = height;
@@ -73,6 +86,10 @@ class Game {
         this.element.append(wrapper);
     }
 
+    /**
+     * @method randomCells Generates random relative cells 
+     * @returns {void}
+     */
     randomCells() {
         for (let i = 0; i < 200; i++) {
             const y = Math.floor(Math.random() * this.height);
@@ -91,6 +108,12 @@ class Game {
         }
     }
 
+    /**
+     * @method getNeighbors Returns specific cell's neighboring cells as an array
+     * @param {Number} y Y axis of the cell
+     * @param {Number} x X axis of the cell
+     * @returns {Array}
+     */
     getNeighbors(y, x) {
         const neighbors = [];
 
@@ -109,6 +132,11 @@ class Game {
         return neighbors;
     }
 
+    /**
+     * @method shuffleArray Shuffles contents of an array
+     * @param {Array} array array that needs to be shuffled
+     * @returns {Array}
+     */
     shuffleArray(array) {
         let currentIndex = array.length
         let randomIndex;
@@ -123,18 +151,31 @@ class Game {
         return array;
     }
 
+    /**
+     * @method start Starts the simulation
+     * @param {Number} frequency Frequency of how often the generations should be created in millisecond
+     * @returns {Void}
+     */
     start(frequency = 100) {
-        if(this.interval) return;
+        if (this.interval) return;
         this.interval = setInterval(() => {
             this.nextGen();
         }, frequency)
     }
 
-    stop(){
+    /**
+     * @method stop Stops the simulation
+     * @returns {Void}
+     */
+    stop() {
         clearInterval(this.interval)
         this.interval = null
     }
 
+    /**
+     * @method nextGen Creates the next generation
+     * @returns {Void}
+     */
     nextGen() {
         const toDie = [];
         const toLive = [];
@@ -184,12 +225,24 @@ class Game {
 
     }
 
+    /**
+     * @method killCell Kills a specific cell
+     * @param {Number} y Y axis of a cell
+     * @param {Number} x X axis of a cell
+     * @returns {Void}
+     */
     killCell(y, x) {
         this.blocks[y][x].classList.add('dead');
         this.blocks[y][x].classList.remove('alive');
         this.blocks[y][x].dataset.state = 'dead'
     }
 
+    /**
+     * @method reviveCell Revives specific cell
+     * @param {Number} y Y axis of a cell
+     * @param {Number} x X axis of a cell
+     * @returns {Void}
+     */
     reviveCell(y, x) {
         this.blocks[y][x].classList.add('alive');
         this.blocks[y][x].classList.remove('dead');
