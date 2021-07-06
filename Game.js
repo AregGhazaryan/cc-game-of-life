@@ -3,6 +3,10 @@ class Game {
         this.element = document.getElementById('#game');
         this.blocks = [];
         this.generation = 0;
+        
+        const height = (window.innerHeight/12).toFixed() - 10
+        const width = (window.innerWidth/12).toFixed() 
+        this.createView(width, height)
     }
 
     createView(width = 100, height = 100) {
@@ -39,6 +43,9 @@ class Game {
             this.element.append(row)
         }
 
+        const wrapper = document.createElement('div')
+        wrapper.classList.add('btn-wrapper')
+
         const randomBtn = document.createElement('button')
         randomBtn.innerHTML = 'Generate Random Cells'
         randomBtn.classList.add('fancy-btn')
@@ -48,11 +55,22 @@ class Game {
         const startBtn = document.createElement('button')
         startBtn.innerHTML = 'Start';
         startBtn.classList.add('fancy-btn');
+        startBtn.classList.add('success')
 
-        startBtn.addEventListener('click', () => this.start())
+        startBtn.addEventListener('click', () => this.start(80))
 
-        this.element.append(randomBtn);
-        this.element.append(startBtn);
+        const stopBtn = document.createElement('button')
+        stopBtn.innerHTML = 'Stop'
+        stopBtn.classList.add('fancy-btn')
+        stopBtn.classList.add('danger')
+
+        stopBtn.addEventListener('click', () => this.stop())
+
+        wrapper.append(randomBtn);
+        wrapper.append(stopBtn);
+        wrapper.append(startBtn);
+
+        this.element.append(wrapper);
     }
 
     randomCells() {
@@ -105,10 +123,16 @@ class Game {
         return array;
     }
 
-    start(frequency = 50) {
-        setInterval(() => {
+    start(frequency = 100) {
+        if(this.interval) return;
+        this.interval = setInterval(() => {
             this.nextGen();
         }, frequency)
+    }
+
+    stop(){
+        clearInterval(this.interval)
+        this.interval = null
     }
 
     nextGen() {
