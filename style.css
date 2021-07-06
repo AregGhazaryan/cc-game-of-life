@@ -1,0 +1,35 @@
+.view .cell{
+    height: 10px;
+    width: 10px;
+    border:1px solid #cacaca;
+}
+
+.view .row{
+    display: flex;
+}
+
+.view .cell.dead{
+    background-color: white;
+}
+
+.view .cell.alive{
+    background-color: red;
+}
+
+.view .fancy-btn{
+    margin-top: 20px;
+    border: none;
+    background-color: #3c93ff;
+    padding: 7px 13px;
+    border-radius: 10px;
+    color: white;
+    box-shadow: 0.1rem 0.2rem 0.5rem #3c93ffbf;
+    cursor: pointer;
+    transition: 0.4s;
+}
+
+.view .fancy-btn:hover{
+    transform: translateY(-2px);
+    transition: 0.2s;
+    box-shadow: 0.1rem 0.4rem 1rem #3c93ffbf;
+}
